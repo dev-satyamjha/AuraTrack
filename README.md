@@ -122,7 +122,7 @@ AuraTrack/
 ## 🚀 Setup & Execution in 5 Commands
 
 Ensure **Docker** and **`uv`** are installed. If not, `pip` works as a fallback for Step 3.
-
+> **Important Pre-requisite**: Ensure all video feeds are placed directly inside the `pipeline/` directory before executing the batch script.
 
 ```bash
 # 1. Clone the repository and enter the directory
