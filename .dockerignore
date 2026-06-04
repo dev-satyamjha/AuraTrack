@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+vision/
+*.mp4
+*.avi
+*.db
+.git/

@@ -1,12 +1,42 @@
 [project]
 name = "auratrack"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "AuraTrack - Retail Intelligence API and Computer Vision Pipeline"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.11"
+
 dependencies = [
-    "fastapi>=0.136.3",
-    "pydantic>=2.13.4",
-    "sqlmodel>=0.0.38",
-    "uvicorn>=0.48.0",
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "pandas",
+    "requests",
+    "opencv-python",
+    "ultralytics",
+    "shapely",
+    "rich",
+    "torch",
+    "torchvision"
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "httpx"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "pipeline"]

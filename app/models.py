@@ -1,25 +1,68 @@
-from typing import Optional, Dict, Any
-from sqlmodel import SQLModel, Field, Column, JSON
-from datetime import datetime
+from pydantic import BaseModel
+from typing import Optional
 
-class Event(SQLModel, table=True):
-    event_id: str = Field(primary_key=True)
-    store_id: str = Field(index=True)
+""" Schema for Entry, Exit, and Re-entry events. """
+class EntryEvent(BaseModel):
+    event_type: str
+    id_token: str
+    store_code: str
     camera_id: str
-    visitor_id: str = Field(index=True)
-    event_type: str = Field(index=True)
-    timestamp: datetime = Field(index=True)
+    event_timestamp: str
+    is_staff: bool
+    gender_pred: str
+    age_pred: int
+    age_bucket: str
+    is_face_hidden: bool
+    group_id: Optional[str] = None
+    group_size: Optional[int] = None
 
-    zone_id: Optional[str] = None
-    dwell_ms: int = Field(default=0)
-    is_staff: bool = Field(default=False)
-    confidence: float
+""" Schema for Zone Enter, Zone Exit, and Zone Dwell events. """
+class ZoneEvent(BaseModel):
+    event_type: str
+    track_id: int
+    store_id: str
+    camera_id: str
+    zone_id: str
+    zone_name: str
+    zone_type: str
+    is_revenue_zone: str
+    event_time: str
+    zone_hotspot_x: float
+    zone_hotspot_y: float
+    gender: str
+    age: int
+    age_bucket: str
+    dwell_ms: Optional[int] = None
 
-    metadata_field: Dict[str, Any] = Field(default={}, sa_column=Column(JSON))
+""" Schema for Billing Queue Abandoned and Completed events. """
+class QueueEvent(BaseModel):
+    queue_event_id: str
+    event_type: str
+    track_id: int
+    store_id: str
+    camera_id: str
+    zone_id: str
+    zone_name: str
+    zone_type: str
+    is_revenue_zone: str
+    queue_join_ts: str
+    queue_served_ts: Optional[str] = None
+    queue_exit_ts: str
+    wait_seconds: int
+    queue_position_at_join: int
+    abandoned: bool
+    zone_hotspot_x: float
+    zone_hotspot_y: float
+    gender: str
+    age: int
+    age_bucket: str
 
-class Transaction(SQLModel, table=True):
-    """Stores the POS data from the CSV"""
-    transaction_id: str = Field(primary_key=True)
-    store_id: str = Field(index=True)
-    timestamp: datetime = Field(index=True)
-    amount: float
+""" Schema for Legacy POS Transaction Data. """
+class POSTransaction(BaseModel):
+    order_id: int
+    order_date: str
+    order_time: str
+    store_id: str
+    product_id: int
+    brand_name: str
+    total_amount: float
